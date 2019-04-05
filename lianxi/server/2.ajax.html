@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var  xhr = new XMLHttpRequest();
+    xhr.open("POST","http://10.9.25.33:3010");
+    xhr.addEventistener("load",loadHandler);
+    xhr.send("user=penghua&age=20");
+    function loadHandle(e){
+        console.log(this.response);
+    }
+</script>
+</body>
+</html>

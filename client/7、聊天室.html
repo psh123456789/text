@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        textarea
+        {
+            width: 1000px;
+            height: 500px;
+            overflow: auto;
+            word-wrap: break-word;
+            font-size: 16px;
+        }
+        #user
+        {
+            width:80px;
+            text-align: center;
+        }
+        #msg
+        {
+            width: 866px;
+
+        }
+    </style>
+</head>
+<body>
+    <textarea title="msgList" id="msgList"></textarea><br>
+    <input type="text" id="user" title="user" value="谢天">
+    <input type="text" id="msg" title="msg" placeholder="输入聊天的内容">
+    <button>发送</button>
+    <script>
+        var msgList,user,msg,bn;
+        init();
+        function init() {
+            msgList=document.querySelector("#msgList");
+            user=document.querySelector("#user");
+            msg=document.querySelector("#msg");
+            bn=document.querySelector("button");
+            bn.addEventListener("click",clickHandler);
+            window.addEventListener("keyup",clickHandler);
+            setInterval(animation,30);
+        }
+        
+        function animation() {
+            ajax({type:2});
+        }
+        function clickHandler(e) {
+            if(e.type==="click" || (e.type==="keyup" && e.keyCode===13)){
+                if(user.value.trim().length===0 || msg.value.trim().length===0){
+                    alert("输入的内容不能为空");
+                    return;
+                }
+                var date=new Date();
+                var time=date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                ajax({
+                    type:1,
+                    name:user.value,
+                    msg:msg.value,
+                    date:time
+                });
+                msg.value="";
+            }
+        }
+        
+        function ajax(obj) {
+            var xhr=new XMLHttpRequest();
+            xhr.open("POST","http://10.9.25.176:3010");
+            xhr.addEventListener("load",loadHandler);
+            xhr.send(encodeURIComponent(JSON.stringify(obj)));
+        }
+
+        function loadHandler(e) {
+            this.removeEventListener("load",loadHandler);
+            var arr=JSON.parse(decodeURIComponent(this.response)).result;
+            var msgs="";
+            for(var i=0;i<arr.length;i++){
+                msgs+=arr[i].name+"("+arr[i].date+"):\n    "+arr[i].msg+"\n";
+            }
+            msgList.value=msgs;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    document.cookie="user=xt123456";
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET","http://10.9.25.33:3010?user=pendhua&age=20");
+    xhr.addEventListener("load",loadHandler);
+    xhr.send();
+    function loadHandler(e){
+        console.log(this.response);
+    }
+</script>
+</body>
+</html>

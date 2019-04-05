@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        setInterval(animation,16);
+        function animation() {
+            var xhr=new XMLHttpRequest();
+            xhr.open("GET","./../package.json");
+            xhr.addEventListener("load",loadHandler);
+            xhr.send();
+        }
+
+        function loadHandler(e) {
+            this.removeEventListener("load",loadHandler);
+           var obj=JSON.parse(this.response);
+           document.documentElement.style.backgroundColor=obj.backgroundColor;
+        }
+    </script>
+</body>
+</html>
